@@ -1,0 +1,79 @@
+---
+output: github_document
+---
+
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# sleeper
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jhuwit/sleeper/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/sleeper/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+
+The goal of `sleeper` is to wrap code to run sleep estimation from wrist-worn accelerometry.  
+The package wraps the code from https://github.com/wadpac/Sundararajan-SleepClassification-2021, that was the modeling code from [Sundararajan (2021)](https://doi.org/10.1038/s41598-020-79217-x).  The work creted random forests to classify raw wrist-worn accelerometry into sleep/wake/non-wear categories and released the models at https://zenodo.org/records/3752645.  The models released were for sleep/wake/non-wear categories, the models for sleep states (e.g. N1 vs REM) were not released.
+
+
+## Installation
+
+You can install the development version of sleeper from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("jhuwit/sleeper")
+```
+
+## Example
+
+```{r, eval = FALSE}
+library(sleeper)
+zip_file = "/path/to/zip_file.zip"
+sl_download_models(zip_file)
+```
+
+```{r, eval = FALSE}
+model_dir = "/path/to/models"
+if (file.exists(zip_file)) {
+  unzip(zip_file, exdir = model_dir, junkpaths = TRUE)
+}
+```
+
+```{r read_data, cache = TRUE}
+library(sleeper)
+library(readr)
+
+file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
+data = readr::read_csv(file)
+if (sl_python_modules_installed()) {
+  res = sl_features(data)
+  names(res)
+  head(as.data.frame(res))
+}
+```
+
+```{r, include = FALSE}
+model_dir = "~/Dropbox/Projects/Sundararajan-SleepClassification-2021/3752645"
+```
+
+```{r estimate_sleep, cache = TRUE}
+if (sl_have_models(model_dir)) {
+  output = estimate_sleep(data, model_dir = model_dir)
+  print(head(output))
+}
+```
+
+
+
+
+

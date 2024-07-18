@@ -28,6 +28,9 @@ sl_have_models = function(model_dir) {
 #' @param ... additional arguments to pass to [curl::curl_download]
 #' @export
 sl_download_models = function(zip_file, quiet = FALSE, ...) {
+  if (file.exists(zip_file)) {
+    stop(paste0(zip_file, " exists, not overwriting!"))
+  }
   curl::curl_download(
     "https://zenodo.org/api/records/3752645/files-archive",
     destfile = zip_file,
