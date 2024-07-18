@@ -1,0 +1,25 @@
+Package: sleeper
+Title: Esimate Sleep Status from Accelerometry Data
+Version: 0.01
+Authors@R: 
+    person(given = "John",
+           family = "Muschelli",
+           role = c("aut", "cre"),
+           email = "muschellij2@gmail.com",
+           comment = c(ORCID = "0000-0001-6469-1750"))
+Description: Wraps the classifier from the paper 
+  <https://doi.org/10.1038/s41598-020-79217-x> and associated code from
+  <https://github.com/wadpac/Sundararajan-SleepClassification-2021/blob/master/ggir_ext>.
+  Users must download the model files from <https://doi.org/10.5281/zenodo.3752645>
+  in order to use this method.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    dplyr,
+    lubridate,
+    magrittr,
+    reticulate
+Suggests: 
+    readr
