@@ -30,9 +30,10 @@ sl_features = function(data) {
   data = standardize_data(data)
 
   file = system.file("features.py", package = "sleeper")
-  reticulate::source_python(file)
+  feat_env = new.env()
+  reticulate::source_python(file, envir = feat_env)
 
-  res = compute_features_out(
+  res = feat_env$compute_features_out(
     data = data,
     time_interval = 30L)
   names(res) = c("times", "ENMO", "angle_z", "LIDS")
@@ -61,26 +62,29 @@ sl_features = function(data) {
 estimate_sleep = function(
     data,
     model_dir) {
-  data = standardize_data(data)
 
-  # times = unique(lubridate::floor_date(data$timestamp, "30 seconds"))
+  data = standardize_data(data)
 
   model_dir = path.expand(model_dir)
   model_dir = normalizePath(model_dir, winslash = "/", mustWork = TRUE)
 
   file = system.file("get_sleep_stage.py", package = "sleeper")
-  reticulate::source_python(file)
+  sleep_env = new.env()
+  reticulate::source_python(file, envir = sleep_env)
 
-  res = get_sleep_stage(
+  res = sleep_env$get_sleep_stage(
     data = data,
     time_interval = 30L,
     modeldir = model_dir,
     mode = "binary")
 
   file = system.file("features.py", package = "sleeper")
-  reticulate::source_python(file)
-  times = get_resampled_time(data, time_interval = 30L)
+  feat_env = new.env()
+  reticulate::source_python(file, envir = feat_env)
+  times = feat_env$get_resampled_time(data, time_interval = 30L)
   times = c(times)
+  # times = unique(lubridate::floor_date(data$timestamp, "30 seconds"))
+
   output = dplyr::tibble(
     time = times,
     classification = res

@@ -24,10 +24,13 @@ sl_have_models = function(model_dir) {
 #' @rdname sl_models
 #' @param zip_file path of zip file to download the models zip file to.
 #' Then [utils::unzip] can be run to extract the models to a specific folder
+#' @param quiet argument passed to [curl::curl_download]
+#' @param ... additional arguments to pass to [curl::curl_download]
 #' @export
-sl_download_models = function(zip_file, quiet = FALSE) {
+sl_download_models = function(zip_file, quiet = FALSE, ...) {
   curl::curl_download(
     "https://zenodo.org/api/records/3752645/files-archive",
     destfile = zip_file,
-    quiet = quiet)
+    quiet = quiet,
+    ...)
 }

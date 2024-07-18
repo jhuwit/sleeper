@@ -7,7 +7,7 @@
 \usage{
 sl_have_models(model_dir)
 
-sl_download_models(zip_file, quiet = FALSE)
+sl_download_models(zip_file, quiet = FALSE, ...)
 }
 \arguments{
 \item{model_dir}{path to the folder with models from
@@ -15,6 +15,10 @@ sl_download_models(zip_file, quiet = FALSE)
 
 \item{zip_file}{path of zip file to download the models zip file to.
 Then \link[utils:unzip]{utils::unzip} can be run to extract the models to a specific folder}
+
+\item{quiet}{argument passed to \link[curl:curl_download]{curl::curl_download}}
+
+\item{...}{additional arguments to pass to \link[curl:curl_download]{curl::curl_download}}
 }
 \value{
 A \code{tibble} of times and classfication of category.
