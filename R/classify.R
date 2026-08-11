@@ -1,14 +1,14 @@
 standardize_data = function(data) {
   x = y = z = timestamp = NULL
   rm(list = c("x", "y", "z", "timestamp"))
-  data = data %>%
+  data = data |>
     dplyr::rename_all(tolower)
-  data = data %>%
-    dplyr::rename(timestamp = dplyr::any_of("time")) %>%
-    dplyr::rename(timestamp = dplyr::any_of("header_timestamp")) %>%
+  data = data |>
+    dplyr::rename(timestamp = dplyr::any_of("time")) |>
+    dplyr::rename(timestamp = dplyr::any_of("header_timestamp")) |>
     dplyr::rename(timestamp = dplyr::any_of("header_time_stamp"))
 
-  data = data %>%
+  data = data |>
     dplyr::select(timestamp, x, y, z)
 }
 
@@ -19,7 +19,8 @@ sl_python_modules_installed = function() {
     "numpy",
     "joblib",
     "collections",
-    "scipy")
+    "scipy",
+    "sklearn")
   all(sapply(modules, reticulate::py_module_available))
 }
 
@@ -45,6 +46,7 @@ sl_features = function(data) {
 #' Estimate Sleep from Wrist-Worn Accelerometry
 #'
 #' @param data A `data.frame` with columns of `timestamp`, `x`, `y`, `z`
+#' @param epoch Time in seconds for the time interval estimate
 #' @param model_dir path to the folder with models from
 #' \href{https://doi.org/10.5281/zenodo.3752645}{https://doi.org/10.5281/zenodo.3752645}
 #'
@@ -61,8 +63,12 @@ sl_features = function(data) {
 #' }
 estimate_sleep = function(
     data,
+    epoch = 30L,
     model_dir) {
 
+  assertthat::assert_that(
+    assertthat::is.count(epoch)
+  )
   data = standardize_data(data)
 
   model_dir = path.expand(model_dir)
@@ -74,14 +80,14 @@ estimate_sleep = function(
 
   res = sleep_env$get_sleep_stage(
     data = data,
-    time_interval = 30L,
+    time_interval = epoch,
     modeldir = model_dir,
     mode = "binary")
 
   file = system.file("features.py", package = "sleeper")
   feat_env = new.env()
   reticulate::source_python(file, envir = feat_env)
-  times = feat_env$get_resampled_time(data, time_interval = 30L)
+  times = feat_env$get_resampled_time(data, time_interval = epoch)
   times = c(times)
   # times = unique(lubridate::floor_date(data$timestamp, "30 seconds"))
 

@@ -10,10 +10,12 @@ sl_python_modules_installed()
 
 sl_features(data)
 
-estimate_sleep(data, model_dir)
+estimate_sleep(data, epoch = 30L, model_dir)
 }
 \arguments{
 \item{data}{A \code{data.frame} with columns of \code{timestamp}, \code{x}, \code{y}, \code{z}}
+
+\item{epoch}{Time in seconds for the time interval estimate}
 
 \item{model_dir}{path to the folder with models from
 \href{https://doi.org/10.5281/zenodo.3752645}{https://doi.org/10.5281/zenodo.3752645}}
