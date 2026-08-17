@@ -17,7 +17,7 @@ sl_download_models(
 }
 \arguments{
 \item{model_dir}{path to the folder with models from
-\href{https://doi.org/10.5281/zenodo.3752645}{https://doi.org/10.5281/zenodo.3752645}}
+\doi{10.5281/zenodo.3752645}}
 
 \item{quiet}{argument passed to \link[curl:curl_download]{curl::curl_download}}
 

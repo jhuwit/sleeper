@@ -18,10 +18,10 @@ estimate_sleep(data, epoch = 30L, model_dir)
 \item{epoch}{Time in seconds for the time interval estimate}
 
 \item{model_dir}{path to the folder with models from
-\href{https://doi.org/10.5281/zenodo.3752645}{https://doi.org/10.5281/zenodo.3752645}}
+\doi{10.5281/zenodo.3752645}}
 }
 \value{
-A \code{tibble} of times and classfication of category.
+A \code{tibble} of times and classification of category.
 }
 \description{
 Estimate Sleep from Wrist-Worn Accelerometry

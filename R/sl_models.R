@@ -23,7 +23,7 @@ model_df = function(model_dir = NULL, folds = 1:5) {
 #' Check for Downloaded Sleep Models
 #'
 #' @param model_dir path to the folder with models from
-#' \href{https://doi.org/10.5281/zenodo.3752645}{https://doi.org/10.5281/zenodo.3752645}
+#' \doi{10.5281/zenodo.3752645}
 #'
 #' @return A logical indicating all folds are downloaded.
 #' @export

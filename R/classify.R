@@ -48,9 +48,9 @@ sl_features = function(data) {
 #' @param data A `data.frame` with columns of `timestamp`, `x`, `y`, `z`
 #' @param epoch Time in seconds for the time interval estimate
 #' @param model_dir path to the folder with models from
-#' \href{https://doi.org/10.5281/zenodo.3752645}{https://doi.org/10.5281/zenodo.3752645}
+#' \doi{10.5281/zenodo.3752645}
 #'
-#' @return A `tibble` of times and classfication of category.
+#' @return A `tibble` of times and classification of category.
 #' @export
 #'
 #' @examples
