@@ -3,3 +3,5 @@
 ^LICENSE\.md$
 ^\.github$
 ^README\.Rmd$
+^README_cache$
+^\.DS_Store$

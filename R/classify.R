@@ -61,6 +61,21 @@ sl_features = function(data) {
 #'      sl_features(data)
 #'   }
 #' }
+#' \donttest{
+#'   # May be something like
+#'   model_dir = "~/Dropbox/Projects/Sundararajan-SleepClassification-2021/3752645"
+#'   model_dir = file.path(tempdir(), "3752645")
+#'   dir.create(model_dir, recursive = TRUE, showWarnings = FALSE)
+#'   if (sl_python_modules_installed()) {
+#'     # fold 2 is the smallest size in disk space
+#'     sl_download_models(model_dir, folds = 2)
+#'     if (requireNamespace("readr", quietly = TRUE)) {
+#'       file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
+#'       data = readr::read_csv(file)
+#'       try({estimate_sleep(data, model_dir = model_dir)})
+#'     }
+#'   }
+#' }
 estimate_sleep = function(
     data,
     epoch = 30L,

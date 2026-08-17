@@ -1,6 +1,6 @@
 Package: sleeper
 Title: Esimate Sleep Status from Accelerometry Data
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person(given = "John",
            family = "Muschelli",
@@ -15,12 +15,11 @@ Description: Wraps the classifier from the paper
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-Depends: R (>= 4.0.0)
+Depends: R (>= 4.1.0)
 Imports: 
     assertthat,
     curl,
     dplyr,
-    magrittr,
     reticulate
 Suggests: 
     readr
