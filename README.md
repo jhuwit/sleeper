@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/jhuwit/sleeper/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/sleeper/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/jhuwit/sleeper/graph/badge.svg)](https://app.codecov.io/gh/jhuwit/sleeper)
 <!-- badges: end -->
 
 The goal of `sleeper` is to wrap code to run sleep estimation from

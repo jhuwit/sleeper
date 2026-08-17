@@ -58,7 +58,7 @@ sl_features = function(data) {
 #' if (requireNamespace("readr", quietly = TRUE)) {
 #'   data = readr::read_csv(file)
 #'   if (sl_python_modules_installed()) {
-#'      sl_features(data)
+#'      feat = sl_features(data)
 #'   }
 #' }
 #' \donttest{
