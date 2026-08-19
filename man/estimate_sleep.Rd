@@ -4,6 +4,7 @@
 \alias{sl_python_modules_installed}
 \alias{sl_features}
 \alias{estimate_sleep}
+\alias{py_estimate_sleep}
 \title{Estimate Sleep from Wrist-Worn Accelerometry}
 \usage{
 sl_python_modules_installed()
@@ -11,6 +12,14 @@ sl_python_modules_installed()
 sl_features(data)
 
 estimate_sleep(data, epoch = 30L, model_dir)
+
+py_estimate_sleep(
+  ...,
+  pyenv_function = function() {
+     sleeper::py_require_sleeper()
+ },
+  show = FALSE
+)
 }
 \arguments{
 \item{data}{A \code{data.frame} with columns of \code{timestamp}, \code{x}, \code{y}, \code{z}}

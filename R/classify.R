@@ -112,3 +112,28 @@ estimate_sleep = function(
   )
   output
 }
+
+#' @export
+#' @rdname estimate_sleep
+py_estimate_sleep = function(
+    ...,
+    pyenv_function = function() {
+      sleeper::py_require_sleeper()
+    },
+    show = FALSE) {
+  rlang::check_installed("callr")
+  steps <- callr::r(
+    show = show,
+    func = function(..., pyenv_function) {
+      args = list(...)
+      if ("args" %in% methods::formalArgs(pyenv_function)) {
+        args = pyenv_function(args)
+      } else {
+        pyenv_function()
+      }
+      res = do.call(sleeper::estimate_sleep, args = args)
+    },
+    args = list(...,
+                pyenv_function = pyenv_function)
+  ) # Safely injects data into the process
+}
