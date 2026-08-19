@@ -28,12 +28,24 @@ py_estimate_sleep(
 
 \item{model_dir}{path to the folder with models from
 \doi{10.5281/zenodo.3752645}}
+
+\item{...}{arguments to pass to \link{estimate_sleep}}
+
+\item{pyenv_function}{function that loads the forest Python package.
+By default, it uses \link{py_require_sleeper} to import
+the package. If this function has an args argument, the output of
+\code{pyenv_function} will be re-assigned to args.}
+
+\item{show}{Logical, whether to show the standard output on the
+screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
 }
 \value{
 A \code{tibble} of times and classification of category.
 }
 \description{
 Estimate Sleep from Wrist-Worn Accelerometry
+
+Run \code{estimate_sleep} with Python
 }
 \examples{
 file = system.file("extdata", "example_data.csv.gz", package = "sleeper")

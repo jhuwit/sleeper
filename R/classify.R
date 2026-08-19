@@ -113,8 +113,18 @@ estimate_sleep = function(
   output
 }
 
-#' @export
+#' Run `estimate_sleep` with Python
+#'
+#' @param ... arguments to pass to [estimate_sleep]
+#' @param pyenv_function function that loads the forest Python package.
+#' By default, it uses [sleeper::py_require_sleeper] to import
+#' the package. If this function has an args argument, the output of
+#' `pyenv_function` will be re-assigned to args.
+#' @param show Logical, whether to show the standard output on the
+#' screen while the child process is running, passed to [callr::r()]
+#'
 #' @rdname estimate_sleep
+#' @export
 py_estimate_sleep = function(
     ...,
     pyenv_function = function() {

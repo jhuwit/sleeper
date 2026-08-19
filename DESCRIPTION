@@ -20,6 +20,7 @@ Imports:
     assertthat,
     curl,
     dplyr,
+    methods,
     reticulate,
     rlang
 Suggests: 
