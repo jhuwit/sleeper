@@ -87,6 +87,10 @@ estimate_sleep = function(
   data = standardize_data(data)
 
   model_dir = path.expand(model_dir)
+  assertthat::assert_that(
+    dir.exists(model_dir),
+    msg = "model_dir must be an existing directory"
+  )
   model_dir = normalizePath(model_dir, winslash = "/", mustWork = TRUE)
 
   file = system.file("get_sleep_stage.py", package = "sleeper")

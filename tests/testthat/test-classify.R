@@ -123,6 +123,6 @@ test_that("estimate_sleep validates epoch and model directory before Python work
   expect_error(estimate_sleep(data, epoch = 0L, model_dir = tempdir()))
   expect_error(
     estimate_sleep(data, epoch = 30L, model_dir = file.path(tempdir(), "missing-models")),
-    "No such file or directory"
+    "model_dir must be an existing directory"
   )
 })

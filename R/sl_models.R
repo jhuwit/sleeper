@@ -10,7 +10,11 @@ model_df = function(model_dir = NULL, folds = 1:5) {
     nonwear = paste0("fold", folds, "_nonwear_balanced_RF.sav")
   )
   if (!is.null(model_dir)) {
-    model_dir = path.expand(model_dir)
+    model_dir = normalizePath(
+      path.expand(model_dir),
+      winslash = "/",
+      mustWork = FALSE
+    )
     files = files |>
       dplyr::mutate(
         binary = file.path(model_dir, binary),
