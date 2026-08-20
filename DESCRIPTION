@@ -7,11 +7,11 @@ Authors@R:
            role = c("aut", "cre"),
            email = "muschellij2@gmail.com",
            comment = c(ORCID = "0000-0001-6469-1750"))
-Description: Wraps the classifier from the paper 
-  <doi:10.1038/s41598-020-79217-x> and associated code from
-  <https://github.com/wadpac/Sundararajan-SleepClassification-2021/tree/master/ggir_ext>.
-  Users must download the model files from <doi:10.5281/zenodo.3752645>
-  in order to use this method.
+Description: Wraps the classifier from the Sundararajan (2021) 
+  <doi:10.1038/s41598-020-79217-x> to estimate sleep using a 
+  random forest. Users must download the model files from 
+  Sundararajan (2020) <doi:10.5281/zenodo.3752645> in 
+  order to use this method.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
