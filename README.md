@@ -15,7 +15,7 @@ wrist-worn accelerometry.
 The package wraps the code from
 <https://github.com/wadpac/Sundararajan-SleepClassification-2021>, that
 was the modeling code from [Sundararajan
-(2021)](https://doi.org/10.1038/s41598-020-79217-x). The work creted
+(2021)](https://doi.org/10.1038/s41598-020-79217-x). The work created
 random forests to classify raw wrist-worn accelerometry into
 sleep/wake/non-wear categories and released the models at
 <https://zenodo.org/records/3752645>. The models released were for
