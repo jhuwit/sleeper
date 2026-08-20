@@ -4,3 +4,4 @@
 
 * This is a new release.
 ---
+The main model is large so some examples download the smallest fold to do the minimal run.
