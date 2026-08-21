@@ -41,24 +41,22 @@ test_that("sl_download_models reuses existing requested model files", {
   expect_equal(downloaded[c("fold", "binary", "nonwear")], expected)
 })
 
-test_that("sl_download_models can download fold 2", {
-  model_dir <- tempfile("sleeper-fold-2-")
-  dir.create(model_dir)
-
-  downloaded <- tryCatch(
-    sl_download_models(
-      model_dir,
-      folds = 2,
-      quiet = TRUE,
-      handle = curl::new_handle(timeout = 120)
+test_that("sl_download_example_model handles unavailable downloads", {
+  model_dir <- tempfile("sleeper-example-models-")
+  result <- NULL
+  expect_message(
+    result <- with_mocked_bindings(
+      sl_download_example_model(model_dir, quiet = TRUE),
+      curl_download = function(...) stop("network unavailable"),
+      .package = "curl"
     ),
-    error = identity
+    "Could not download the compact example model"
   )
-  if (inherits(downloaded, "error")) {
-    skip(paste("Fold 2 models could not be downloaded:", conditionMessage(downloaded)))
-  }
 
-  expect_equal(downloaded$fold, 2)
-  expect_true(all(file.exists(c(downloaded$binary, downloaded$nonwear))))
-  expect_true(all(file.info(c(downloaded$binary, downloaded$nonwear))$size > 0))
+  expect_null(result)
+  expect_true(dir.exists(model_dir))
+  example_files <- unlist(
+    sleeper:::model_df(model_dir, folds = 2)[c("binary", "nonwear")]
+  )
+  expect_false(any(file.exists(example_files)))
 })

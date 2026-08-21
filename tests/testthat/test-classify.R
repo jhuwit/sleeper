@@ -1,6 +1,8 @@
 example_accelerometer_data <- function() {
   file <- system.file("extdata", "example_data.csv.gz", package = "sleeper")
-  readr::read_csv(file, show_col_types = FALSE)
+  # A short segment exercises the feature bridge without parsing the entire
+  # 12-hour recording for every test run.
+  readr::read_csv(file, n_max = 3600L, show_col_types = FALSE)
 }
 
 test_that("standardize_data accepts supported timestamp column names", {

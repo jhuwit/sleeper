@@ -1,6 +1,6 @@
 Package: sleeper
 Title: Estimate Sleep Status from Accelerometry Data
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: 
     person(given = "John",
            family = "Muschelli",

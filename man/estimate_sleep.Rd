@@ -50,23 +50,20 @@ Run \code{estimate_sleep} with Python
 \examples{
 file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
 if (requireNamespace("readr", quietly = TRUE)) {
-  data = readr::read_csv(file)
+  data = readr::read_csv(file, n_max = 3600L)
   if (sl_python_modules_installed()) {
      feat = sl_features(data)
   }
 }
 \donttest{
-  # May be something like
-  model_dir = "~/Dropbox/Projects/Sundararajan-SleepClassification-2021/3752645"
-  model_dir = file.path(tempdir(), "3752645")
-  dir.create(model_dir, recursive = TRUE, showWarnings = FALSE)
   if (sl_python_modules_installed()) {
-    # fold 2 is the smallest size in disk space
-    sl_download_models(model_dir, folds = 2)
-    if (requireNamespace("readr", quietly = TRUE)) {
+    models = sl_download_example_model(quiet = TRUE)
+    if (!is.null(models) && requireNamespace("readr", quietly = TRUE)) {
       file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
-      data = readr::read_csv(file)
-      try({estimate_sleep(data, model_dir = model_dir)})
+      data = readr::read_csv(file, n_max = 3600L)
+      # Two minutes is sufficient to demonstrate the workflow and avoids
+      # applying the forest to the full 12-hour example recording.
+      try({estimate_sleep(data, model_dir = dirname(models$binary[1]))})
     }
   }
 }

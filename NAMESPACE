@@ -3,6 +3,7 @@
 export(estimate_sleep)
 export(py_estimate_sleep)
 export(py_require_sleeper)
+export(sl_download_example_model)
 export(sl_download_models)
 export(sl_features)
 export(sl_have_models)
