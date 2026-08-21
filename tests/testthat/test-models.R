@@ -12,7 +12,11 @@ test_that("model_df constructs expected model paths", {
   models <- sleeper:::model_df(model_dir, folds = 2:3)
   expect_equal(models$fold, 2:3)
   expect_true(all(dirname(models$binary) ==
-                    normalizePath(path.expand(model_dir), mustWork = FALSE)))
+                    normalizePath(
+                      path.expand(model_dir),
+                      winslash = "/",
+                      mustWork = FALSE
+                    )))
   expect_equal(nrow(sleeper:::model_df(folds = NULL)), 5)
 })
 
