@@ -2,11 +2,17 @@ import sys, os
 import numpy as np
 import pandas as pd
 import joblib
+from threadpoolctl import threadpool_limits
 
 from features import compute_features
 from collections import Counter
 
 def get_sleep_stage(data, time_interval, modeldir, mode):
+  # Limit native BLAS/OpenMP libraries for CRAN's shared check machines.
+  with threadpool_limits(limits=1):
+    return _get_sleep_stage(data, time_interval, modeldir, mode)
+
+def _get_sleep_stage(data, time_interval, modeldir, mode):
   if mode == 'binary':
     states = ['Wake', 'Sleep']
   else: # multiclass
@@ -28,6 +34,7 @@ def get_sleep_stage(data, time_interval, modeldir, mode):
   for fold,fname in enumerate(nonwear_files):
     print('Predicting nonwear with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
+    cv_clf.n_jobs = 1
     feat_sc = scaler.transform(feat)
     fold_nw_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:
@@ -45,6 +52,7 @@ def get_sleep_stage(data, time_interval, modeldir, mode):
   for fold,fname in enumerate(model_files):
     print('Predicting sleep states with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
+    cv_clf.n_jobs = 1
     feat_sc = scaler.transform(feat)
     fold_y_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:
@@ -61,6 +69,5 @@ def get_sleep_stage(data, time_interval, modeldir, mode):
   results = list(results)
 
   #sys.stdout.flush()
-  
-  return results
 
+  return results

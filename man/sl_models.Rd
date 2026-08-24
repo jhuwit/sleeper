@@ -2,18 +2,10 @@
 % Please edit documentation in R/sl_models.R
 \name{sl_have_models}
 \alias{sl_have_models}
-\alias{sl_download_example_model}
 \alias{sl_download_models}
 \title{Check for Downloaded Sleep Models}
 \usage{
 sl_have_models(model_dir)
-
-sl_download_example_model(
-  model_dir = file.path(tempdir(), "sleeper-example-models"),
-  quiet = FALSE,
-  ...,
-  overwrite = FALSE
-)
 
 sl_download_models(
   model_dir,
@@ -37,11 +29,7 @@ sl_download_models(
 specify that (used almost exclusively for testing).}
 }
 \value{
-\code{sl_have_models()} returns a logical indicating whether all complete
-model folds are present. \code{sl_download_models()} and
-\code{sl_download_example_model()} return a data frame of model paths;
-\code{sl_download_example_model()} returns \code{NULL} if its GitHub download
-fails.
+A logical indicating all folds are downloaded.
 }
 \description{
 Check for Downloaded Sleep Models
