@@ -35,6 +35,8 @@ def _get_sleep_stage(data, time_interval, modeldir, mode):
     print('Predicting nonwear with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
     cv_clf.n_jobs = 1
+    cv_clf.estimator.n_jobs = 1
+    cv_clf.best_estimator_.n_jobs = 1
     feat_sc = scaler.transform(feat)
     fold_nw_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:
