@@ -11,9 +11,9 @@ py_require_sleeper = function(...) {
                 "numpy==1.20",
                 "joblib",
                 "scipy",
+                "threadpoolctl",
                 "scikit-learn==0.22.1"),
     python_version = "3.8",
     ...)
 }
-
 

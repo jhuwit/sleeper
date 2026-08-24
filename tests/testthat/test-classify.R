@@ -38,6 +38,7 @@ test_that("Python dependency helpers delegate to reticulate", {
     py_require = function(packages, python_version, ...) {
       expect_equal(python_version, "3.8")
       expect_true("numpy==1.20" %in% packages)
+      expect_true("threadpoolctl" %in% packages)
       TRUE
     },
     .package = "reticulate"
