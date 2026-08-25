@@ -43,20 +43,11 @@ test_that("sl_download_models reuses existing requested model files", {
 
 test_that("sl_download_example_model handles unavailable downloads", {
   model_dir <- tempfile("sleeper-example-models-")
-  result <- NULL
-  expect_message(
-    result <- with_mocked_bindings(
-      sl_download_example_model(model_dir, quiet = TRUE),
-      curl_download = function(...) stop("network unavailable"),
-      .package = "curl"
-    ),
-    "Could not download the compact example model"
-  )
+  result = sl_example_model(model_dir)
 
-  expect_null(result)
-  expect_true(dir.exists(model_dir))
+
   example_files <- unlist(
     sleeper:::model_df(model_dir, folds = 2)[c("binary", "nonwear")]
   )
-  expect_false(any(file.exists(example_files)))
+  expect_true(all(file.exists(example_files)))
 })

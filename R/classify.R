@@ -24,8 +24,20 @@ sl_python_modules_installed = function() {
   all(sapply(modules, reticulate::py_module_available))
 }
 
-#' @rdname estimate_sleep
+#' Get Sleep Features
+#'
+#' @param data A `data.frame` with columns of `timestamp`, `x`, `y`, `z`
+#'
+#' @return A `tibble` of times and classification of category.
 #' @export
+#' @examples
+#' file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
+#' if (requireNamespace("readr", quietly = TRUE)) {
+#'   data = readr::read_csv(file, n_max = 3600L)
+#'   if (sl_python_modules_installed()) {
+#'      feat = sl_features(data)
+#'   }
+#' }
 sl_features = function(data) {
 
   data = standardize_data(data)
@@ -57,16 +69,9 @@ sl_features = function(data) {
 #' @export
 #'
 #' @examples
-#' file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
-#' if (requireNamespace("readr", quietly = TRUE)) {
-#'   data = readr::read_csv(file, n_max = 3600L)
-#'   if (sl_python_modules_installed()) {
-#'      feat = sl_features(data)
-#'   }
-#' }
 #' \donttest{
 #'   if (sl_python_modules_installed()) {
-#'     models = sl_download_example_model(quiet = TRUE)
+#'     models = sl_example_model()
 #'     if (!is.null(models) && requireNamespace("readr", quietly = TRUE)) {
 #'       file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
 #'       data = readr::read_csv(file, n_max = 3600L)
@@ -137,7 +142,6 @@ estimate_sleep = function(
 #' @param show Logical, whether to show the standard output on the
 #' screen while the child process is running, passed to [callr::r()]
 #'
-#' @rdname estimate_sleep
 #' @export
 py_estimate_sleep = function(
     ...,

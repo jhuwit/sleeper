@@ -2,24 +2,12 @@
 % Please edit documentation in R/classify.R
 \name{sl_python_modules_installed}
 \alias{sl_python_modules_installed}
-\alias{sl_features}
 \alias{estimate_sleep}
-\alias{py_estimate_sleep}
 \title{Estimate Sleep from Wrist-Worn Accelerometry}
 \usage{
 sl_python_modules_installed()
 
-sl_features(data)
-
 estimate_sleep(data, epoch = 30L, model_dir, cores = 1L)
-
-py_estimate_sleep(
-  ...,
-  pyenv_function = function() {
-     sleeper::py_require_sleeper()
- },
-  show = FALSE
-)
 }
 \arguments{
 \item{data}{A \code{data.frame} with columns of \code{timestamp}, \code{x}, \code{y}, \code{z}}
@@ -32,36 +20,17 @@ py_estimate_sleep(
 \item{cores}{Number of workers to use for model prediction. Any non-zero
 integer accepted by Python joblib is allowed; \code{-1} uses all available
 workers. Defaults to one worker for CRAN compatibility.}
-
-\item{...}{arguments to pass to \link{estimate_sleep}}
-
-\item{pyenv_function}{function that loads the forest Python package.
-By default, it uses \link{py_require_sleeper} to import
-the package. If this function has an args argument, the output of
-\code{pyenv_function} will be re-assigned to args.}
-
-\item{show}{Logical, whether to show the standard output on the
-screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
 }
 \value{
 A \code{tibble} of times and classification of category.
 }
 \description{
 Estimate Sleep from Wrist-Worn Accelerometry
-
-Run \code{estimate_sleep} with Python
 }
 \examples{
-file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
-if (requireNamespace("readr", quietly = TRUE)) {
-  data = readr::read_csv(file, n_max = 3600L)
-  if (sl_python_modules_installed()) {
-     feat = sl_features(data)
-  }
-}
 \donttest{
   if (sl_python_modules_installed()) {
-    models = sl_download_example_model(quiet = TRUE)
+    models = sl_example_model()
     if (!is.null(models) && requireNamespace("readr", quietly = TRUE)) {
       file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
       data = readr::read_csv(file, n_max = 3600L)
