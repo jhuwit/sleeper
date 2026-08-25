@@ -62,7 +62,7 @@ sl_features = function(data) {
 #' @param model_dir path to the folder with models from
 #' \doi{10.5281/zenodo.3752645}
 #' @param cores Number of workers to use for model prediction. Any non-zero
-#'   integer accepted by Python joblib is allowed; `-1` uses all available
+#'   integer accepted by Python `joblib` is allowed; `-1` uses all available
 #'   workers. Defaults to one worker for CRAN compatibility.
 #'
 #' @return A `tibble` of times and classification of category.

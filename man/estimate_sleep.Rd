@@ -18,7 +18,7 @@ estimate_sleep(data, epoch = 30L, model_dir, cores = 1L)
 \doi{10.5281/zenodo.3752645}}
 
 \item{cores}{Number of workers to use for model prediction. Any non-zero
-integer accepted by Python joblib is allowed; \code{-1} uses all available
+integer accepted by Python \code{joblib} is allowed; \code{-1} uses all available
 workers. Defaults to one worker for CRAN compatibility.}
 }
 \value{
