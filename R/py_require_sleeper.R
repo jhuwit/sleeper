@@ -8,6 +8,22 @@
   "scipy"
 )
 
+# Module names are separate from package requirements: `collections` is part
+# of Python's standard library and is imported by `utils.py`, so uv must not
+# be asked to install it.
+.sleeper_feature_modules = c(
+  "pandas",
+  "numpy",
+  "scipy",
+  "collections"
+)
+
+.sleeper_model_modules = c(
+  "joblib",
+  "threadpoolctl",
+  "sklearn"
+)
+
 #' Command for `py_require` for the full `sleeper` workflow
 #'
 #' @param ... arguments to pass to [reticulate::py_require()]

@@ -24,13 +24,23 @@ test_that("standardize_data accepts supported timestamp column names", {
 test_that("Python dependency helpers delegate to reticulate", {
   expect_true(with_mocked_bindings(
     sl_python_modules_installed(),
-    py_module_available = function(module) TRUE,
-    .package = "reticulate"
+    .python_modules_available = function(modules) {
+      expect_equal(
+        modules,
+        c("pandas", "numpy", "scipy", "collections",
+          "joblib", "threadpoolctl", "sklearn")
+      )
+      TRUE
+    },
+    .package = "sleeper"
   ))
   expect_false(with_mocked_bindings(
-    sl_python_modules_installed(),
-    py_module_available = function(module) module != "numpy",
-    .package = "reticulate"
+    sl_python_modules_installed("features"),
+    .python_modules_available = function(modules) {
+      expect_equal(modules, c("pandas", "numpy", "scipy", "collections"))
+      FALSE
+    },
+    .package = "sleeper"
   ))
 
   expect_true(with_mocked_bindings(
@@ -45,10 +55,10 @@ test_that("Python dependency helpers delegate to reticulate", {
   ))
 })
 
-test_that("the load hook registers feature Python dependencies", {
+test_that("the load hook registers all Python dependencies", {
   expect_true(with_mocked_bindings(
     sleeper:::.onLoad("unused", "sleeper"),
-    .py_require_sleeper_features = function(...) TRUE,
+    py_require_sleeper = function(...) TRUE,
     .package = "sleeper"
   ))
 })
@@ -61,6 +71,25 @@ test_that("feature extraction requests only its Python dependencies", {
       expect_equal(python_version, "3.8")
       TRUE
     },
+    .package = "reticulate"
+  ))
+})
+
+test_that("module availability probe does not import target modules", {
+  importlib_util = list(
+    find_spec = function(module) if (module == "missing") NULL else list()
+  )
+  expect_true(with_mocked_bindings(
+    sleeper:::.python_modules_available(c("numpy", "pandas")),
+    import = function(module, ...) {
+      expect_equal(module, "importlib.util")
+      importlib_util
+    },
+    .package = "reticulate"
+  ))
+  expect_false(with_mocked_bindings(
+    sleeper:::.python_modules_available(c("numpy", "missing")),
+    import = function(module, ...) importlib_util,
     .package = "reticulate"
   ))
 })

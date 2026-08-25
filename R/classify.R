@@ -20,11 +20,27 @@ standardize_data = function(data) {
 sl_python_modules_installed = function(component = c("models", "features")) {
   component = match.arg(component)
   modules = if (component == "features") {
-    c("pandas", "numpy", "scipy")
+    .sleeper_feature_modules
   } else {
-    c("pandas", "numpy", "joblib", "collections", "scipy", "sklearn")
+    c(.sleeper_feature_modules, .sleeper_model_modules)
   }
-  all(sapply(modules, reticulate::py_module_available))
+  .python_modules_available(modules)
+}
+
+# `reticulate::py_module_available()` imports each target module. In
+# particular, importing scikit-learn loads its native dependencies, which is
+# needlessly expensive for an availability check. `importlib` is part of the
+# Python standard library; `find_spec()` only checks whether a module can be
+# located on Python's import path.
+.python_modules_available = function(modules) {
+  tryCatch({
+    importlib_util = reticulate::import("importlib.util")
+    all(vapply(
+      modules,
+      function(module) !is.null(importlib_util$find_spec(module)),
+      logical(1)
+    ))
+  }, error = function(error) FALSE)
 }
 
 #' Get Sleep Features
