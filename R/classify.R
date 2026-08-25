@@ -13,14 +13,17 @@ standardize_data = function(data) {
 }
 
 #' @rdname estimate_sleep
+#' @param component Python dependency set to check. The default, `"models"`,
+#'   checks all modules needed for sleep classification; `"features"` checks
+#'   only the feature-extraction modules.
 #' @export
-sl_python_modules_installed = function() {
-  modules = c("pandas",
-    "numpy",
-    "joblib",
-    "collections",
-    "scipy",
-    "sklearn")
+sl_python_modules_installed = function(component = c("models", "features")) {
+  component = match.arg(component)
+  modules = if (component == "features") {
+    c("pandas", "numpy", "scipy")
+  } else {
+    c("pandas", "numpy", "joblib", "collections", "scipy", "sklearn")
+  }
   all(sapply(modules, reticulate::py_module_available))
 }
 
@@ -34,11 +37,13 @@ sl_python_modules_installed = function() {
 #' file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
 #' if (requireNamespace("readr", quietly = TRUE)) {
 #'   data = readr::read_csv(file, n_max = 3600L)
-#'   if (sl_python_modules_installed()) {
+#'   if (sl_python_modules_installed("features")) {
 #'      feat = sl_features(data)
 #'   }
 #' }
 sl_features = function(data) {
+
+  .py_require_sleeper_features()
 
   data = standardize_data(data)
 
@@ -70,7 +75,7 @@ sl_features = function(data) {
 #'
 #' @examples
 #' \donttest{
-#'   if (sl_python_modules_installed()) {
+#'   if (sl_python_modules_installed("models")) {
 #'     models = sl_example_model()
 #'     if (!is.null(models) && requireNamespace("readr", quietly = TRUE)) {
 #'       file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
@@ -106,6 +111,10 @@ estimate_sleep = function(
     msg = "model_dir must be an existing directory"
   )
   model_dir = normalizePath(model_dir, winslash = "/", mustWork = TRUE)
+
+  # Model prediction requires the complete Python stack, whereas
+  # `sl_features()` only requests its smaller feature-extraction stack.
+  py_require_sleeper()
 
   file = system.file("get_sleep_stage.py", package = "sleeper")
   sleep_env = new.env()

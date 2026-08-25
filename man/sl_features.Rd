@@ -19,7 +19,7 @@ Get Sleep Features
 file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
 if (requireNamespace("readr", quietly = TRUE)) {
   data = readr::read_csv(file, n_max = 3600L)
-  if (sl_python_modules_installed()) {
+  if (sl_python_modules_installed("features")) {
      feat = sl_features(data)
   }
 }

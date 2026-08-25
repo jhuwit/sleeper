@@ -2,7 +2,7 @@
 % Please edit documentation in R/py_require_sleeper.R
 \name{py_require_sleeper}
 \alias{py_require_sleeper}
-\title{Command for \code{py_require} for \code{sleeper}}
+\title{Command for \code{py_require} for the full \code{sleeper} workflow}
 \usage{
 py_require_sleeper(...)
 }
@@ -13,5 +13,5 @@ py_require_sleeper(...)
 A logical value indicating whether the package is available.
 }
 \description{
-Command for \code{py_require} for \code{sleeper}
+Command for \code{py_require} for the full \code{sleeper} workflow
 }

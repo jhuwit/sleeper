@@ -5,11 +5,15 @@
 \alias{estimate_sleep}
 \title{Estimate Sleep from Wrist-Worn Accelerometry}
 \usage{
-sl_python_modules_installed()
+sl_python_modules_installed(component = c("models", "features"))
 
 estimate_sleep(data, epoch = 30L, model_dir, cores = 1L)
 }
 \arguments{
+\item{component}{Python dependency set to check. The default, \code{"models"},
+checks all modules needed for sleep classification; \code{"features"} checks
+only the feature-extraction modules.}
+
 \item{data}{A \code{data.frame} with columns of \code{timestamp}, \code{x}, \code{y}, \code{z}}
 
 \item{epoch}{Time in seconds for the time interval estimate}
@@ -29,7 +33,7 @@ Estimate Sleep from Wrist-Worn Accelerometry
 }
 \examples{
 \donttest{
-  if (sl_python_modules_installed()) {
+  if (sl_python_modules_installed("models")) {
     models = sl_example_model()
     if (!is.null(models) && requireNamespace("readr", quietly = TRUE)) {
       file = system.file("extdata", "example_data.csv.gz", package = "sleeper")

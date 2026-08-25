@@ -61,7 +61,7 @@ data = readr::read_csv(file)
 #> 
 #> ℹ Use `spec()` to retrieve the full column specification for this data.
 #> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-if (sl_python_modules_installed()) {
+if (sl_python_modules_installed("features")) {
   res = sl_features(data)
   names(res)
   head(as.data.frame(res))

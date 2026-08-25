@@ -45,11 +45,23 @@ test_that("Python dependency helpers delegate to reticulate", {
   ))
 })
 
-test_that("the load hook requests sleeper Python dependencies", {
+test_that("the load hook registers feature Python dependencies", {
   expect_true(with_mocked_bindings(
     sleeper:::.onLoad("unused", "sleeper"),
-    py_require_sleeper = function(...) TRUE,
+    .py_require_sleeper_features = function(...) TRUE,
     .package = "sleeper"
+  ))
+})
+
+test_that("feature extraction requests only its Python dependencies", {
+  expect_true(with_mocked_bindings(
+    sleeper:::.py_require_sleeper_features(),
+    py_require = function(packages, python_version, ...) {
+      expect_equal(packages, c("pandas", "numpy==1.20", "scipy"))
+      expect_equal(python_version, "3.8")
+      TRUE
+    },
+    .package = "reticulate"
   ))
 })
 
@@ -74,7 +86,7 @@ test_that("sl_features returns named feature output through the Python bridge", 
 
 test_that("sl_features returns feature matrices when Python is available", {
   skip_if_not_installed("readr")
-  if (!sl_python_modules_installed()) {
+  if (!sl_python_modules_installed("features")) {
     skip("Required Python modules are not available")
   }
 
