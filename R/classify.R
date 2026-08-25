@@ -49,6 +49,9 @@ sl_features = function(data) {
 #' @param epoch Time in seconds for the time interval estimate
 #' @param model_dir path to the folder with models from
 #' \doi{10.5281/zenodo.3752645}
+#' @param cores Number of workers to use for model prediction. Any non-zero
+#'   integer accepted by Python joblib is allowed; `-1` uses all available
+#'   workers. Defaults to one worker for CRAN compatibility.
 #'
 #' @return A `tibble` of times and classification of category.
 #' @export
@@ -76,10 +79,19 @@ sl_features = function(data) {
 estimate_sleep = function(
     data,
     epoch = 30L,
-    model_dir) {
+    model_dir,
+    cores = 1L) {
 
   assertthat::assert_that(
     assertthat::is.count(epoch)
+  )
+  assertthat::assert_that(
+    is.numeric(cores),
+    length(cores) == 1L,
+    is.finite(cores),
+    cores == trunc(cores),
+    cores != 0,
+    msg = "cores must be a non-zero integer"
   )
   data = standardize_data(data)
 
@@ -98,7 +110,8 @@ estimate_sleep = function(
     data = data,
     time_interval = epoch,
     modeldir = model_dir,
-    mode = "binary")
+    mode = "binary",
+    cores = cores)
 
   file = system.file("features.py", package = "sleeper")
   feat_env = new.env()

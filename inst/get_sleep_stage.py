@@ -7,21 +7,24 @@ from threadpoolctl import threadpool_limits
 from features import compute_features
 from collections import Counter
 
-def limit_model_workers(model):
-  """Ensure both search wrappers and their forests predict sequentially."""
+def limit_model_workers(model, cores):
+  """Set the number of workers for search wrappers and their forests."""
   if hasattr(model, 'n_jobs'):
-    model.n_jobs = 1
+    model.n_jobs = cores
   if hasattr(model, 'estimator') and hasattr(model.estimator, 'n_jobs'):
-    model.estimator.n_jobs = 1
+    model.estimator.n_jobs = cores
   if hasattr(model, 'best_estimator_') and hasattr(model.best_estimator_, 'n_jobs'):
-    model.best_estimator_.n_jobs = 1
+    model.best_estimator_.n_jobs = cores
 
-def get_sleep_stage(data, time_interval, modeldir, mode):
-  # Limit native BLAS/OpenMP libraries for CRAN's shared check machines.
+def get_sleep_stage(data, time_interval, modeldir, mode, cores=1):
+  if isinstance(cores, bool) or not isinstance(cores, (int, np.integer)) or cores == 0:
+    raise ValueError('cores must be a non-zero integer')
+  # Keep CRAN's shared check machines single-core by default.
+  # Forest workers may be parallel, but each worker gets one BLAS/OpenMP thread.
   with threadpool_limits(limits=1):
-    return _get_sleep_stage(data, time_interval, modeldir, mode)
+    return _get_sleep_stage(data, time_interval, modeldir, mode, cores)
 
-def _get_sleep_stage(data, time_interval, modeldir, mode):
+def _get_sleep_stage(data, time_interval, modeldir, mode, cores):
   if mode == 'binary':
     states = ['Wake', 'Sleep']
   else: # multiclass
@@ -43,7 +46,7 @@ def _get_sleep_stage(data, time_interval, modeldir, mode):
   for fold,fname in enumerate(nonwear_files):
     print('Predicting nonwear with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
-    limit_model_workers(cv_clf)
+    limit_model_workers(cv_clf, cores)
     feat_sc = scaler.transform(feat)
     fold_nw_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:
@@ -61,7 +64,7 @@ def _get_sleep_stage(data, time_interval, modeldir, mode):
   for fold,fname in enumerate(model_files):
     print('Predicting sleep states with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
-    limit_model_workers(cv_clf)
+    limit_model_workers(cv_clf, cores)
     feat_sc = scaler.transform(feat)
     fold_y_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:

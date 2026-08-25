@@ -11,7 +11,7 @@ sl_python_modules_installed()
 
 sl_features(data)
 
-estimate_sleep(data, epoch = 30L, model_dir)
+estimate_sleep(data, epoch = 30L, model_dir, cores = 1L)
 
 py_estimate_sleep(
   ...,
@@ -28,6 +28,10 @@ py_estimate_sleep(
 
 \item{model_dir}{path to the folder with models from
 \doi{10.5281/zenodo.3752645}}
+
+\item{cores}{Number of workers to use for model prediction. Any non-zero
+integer accepted by Python joblib is allowed; \code{-1} uses all available
+workers. Defaults to one worker for CRAN compatibility.}
 
 \item{...}{arguments to pass to \link{estimate_sleep}}
 

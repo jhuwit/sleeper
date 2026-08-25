@@ -95,7 +95,10 @@ test_that("estimate_sleep combines Python predictions with resampled times", {
     if (basename(file) == "get_sleep_stage.py") {
       assign(
         "get_sleep_stage",
-        function(data, time_interval, modeldir, mode) c("Wake", "Sleep"),
+        function(data, time_interval, modeldir, mode, cores) {
+          expect_equal(cores, -1L)
+          c("Wake", "Sleep")
+        },
         envir = envir
       )
     } else {
@@ -111,7 +114,8 @@ test_that("estimate_sleep combines Python predictions with resampled times", {
     estimate_sleep(
       data.frame(timestamp = 1:2, x = 0, y = 0, z = 1),
       epoch = 30L,
-      model_dir = model_dir
+      model_dir = model_dir,
+      cores = -1L
     ),
     source_python = fake_source_python,
     .package = "reticulate"
@@ -124,6 +128,10 @@ test_that("estimate_sleep validates epoch and model directory before Python work
   data <- data.frame(timestamp = 1, x = 0, y = 0, z = 1)
 
   expect_error(estimate_sleep(data, epoch = 0L, model_dir = tempdir()))
+  expect_error(
+    estimate_sleep(data, model_dir = tempdir(), cores = 0L),
+    "cores must be a non-zero integer"
+  )
   expect_error(
     estimate_sleep(data, epoch = 30L, model_dir = file.path(tempdir(), "missing-models")),
     "model_dir must be an existing directory"

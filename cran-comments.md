@@ -4,4 +4,4 @@
 
 * This is a new release.
 ---
-The main model is large so some examples download the smallest fold to do the minimal run, but they are > 5s < 10s.
+Found a second case where parallelization was happening, limiting that now.
