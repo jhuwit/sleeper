@@ -7,6 +7,15 @@ from threadpoolctl import threadpool_limits
 from features import compute_features
 from collections import Counter
 
+def limit_model_workers(model):
+  """Ensure both search wrappers and their forests predict sequentially."""
+  if hasattr(model, 'n_jobs'):
+    model.n_jobs = 1
+  if hasattr(model, 'estimator') and hasattr(model.estimator, 'n_jobs'):
+    model.estimator.n_jobs = 1
+  if hasattr(model, 'best_estimator_') and hasattr(model.best_estimator_, 'n_jobs'):
+    model.best_estimator_.n_jobs = 1
+
 def get_sleep_stage(data, time_interval, modeldir, mode):
   # Limit native BLAS/OpenMP libraries for CRAN's shared check machines.
   with threadpool_limits(limits=1):
@@ -34,9 +43,7 @@ def _get_sleep_stage(data, time_interval, modeldir, mode):
   for fold,fname in enumerate(nonwear_files):
     print('Predicting nonwear with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
-    cv_clf.n_jobs = 1
-    cv_clf.estimator.n_jobs = 1
-    cv_clf.best_estimator_.n_jobs = 1
+    limit_model_workers(cv_clf)
     feat_sc = scaler.transform(feat)
     fold_nw_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:
@@ -54,7 +61,7 @@ def _get_sleep_stage(data, time_interval, modeldir, mode):
   for fold,fname in enumerate(model_files):
     print('Predicting sleep states with model ' + str(fold+1))
     scaler, cv_clf = joblib.load(os.path.join(modeldir, fname))
-    cv_clf.n_jobs = 1
+    limit_model_workers(cv_clf)
     feat_sc = scaler.transform(feat)
     fold_y_pred = cv_clf.predict_proba(feat_sc)
     if fold == 0:
