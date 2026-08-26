@@ -61,11 +61,9 @@ data = readr::read_csv(file)
 #> 
 #> ℹ Use `spec()` to retrieve the full column specification for this data.
 #> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-if (sl_python_modules_installed("features")) {
-  res = sl_features(data)
-  names(res)
-  head(as.data.frame(res))
-}
+res = sl_features(data)
+names(res)
+head(as.data.frame(res))
 #>                           times     ENMO.1     ENMO.2    ENMO.3      ENMO.4
 #> 1 2017-10-30T15:00:00.000000000 0.01434644 0.01772052 0.1975212 0.009440902
 #> 2 2017-10-30T15:00:30.000000000 0.01701947 0.02266649 0.5414451 0.009864418

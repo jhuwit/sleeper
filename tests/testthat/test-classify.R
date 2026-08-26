@@ -114,13 +114,20 @@ test_that("sl_features returns named feature output through the Python bridge", 
 })
 
 test_that("sl_features returns feature matrices when Python is available", {
+  skip_on_cran()
   skip_if_not_installed("readr")
   if (!sl_python_modules_installed("features")) {
+    if (identical(Sys.getenv("CI"), "true")) {
+      fail("Required Python modules could not be provisioned")
+    }
     skip("Required Python modules are not available")
   }
 
   features <- tryCatch(sl_features(example_accelerometer_data()), error = identity)
   if (inherits(features, "error")) {
+    if (identical(Sys.getenv("CI"), "true")) {
+      fail(conditionMessage(features))
+    }
     skip(paste("Python feature extraction is unavailable:", conditionMessage(features)))
   }
 

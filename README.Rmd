@@ -56,11 +56,9 @@ library(readr)
 
 file = system.file("extdata", "example_data.csv.gz", package = "sleeper")
 data = readr::read_csv(file)
-if (sl_python_modules_installed("features")) {
-  res = sl_features(data)
-  names(res)
-  head(as.data.frame(res))
-}
+res = sl_features(data)
+names(res)
+head(as.data.frame(res))
 ```
 
 ```{r, include = FALSE}
@@ -73,7 +71,6 @@ if (sl_have_models(model_dir)) {
   print(head(output))
 }
 ```
-
 
 
 
