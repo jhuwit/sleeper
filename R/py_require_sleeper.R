@@ -4,7 +4,7 @@
 # user only wants `sl_features()`.
 .sleeper_feature_packages = c(
   "pandas",
-  "numpy==1.20",
+  "numpy>=1.20",
   "scipy"
 )
 

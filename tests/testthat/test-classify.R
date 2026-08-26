@@ -47,7 +47,7 @@ test_that("Python dependency helpers delegate to reticulate", {
     py_require_sleeper(),
     py_require = function(packages, python_version, ...) {
       expect_equal(python_version, "3.8")
-      expect_true("numpy==1.20" %in% packages)
+      expect_true("numpy>=1.20" %in% packages)
       expect_true("threadpoolctl" %in% packages)
       TRUE
     },
@@ -55,10 +55,10 @@ test_that("Python dependency helpers delegate to reticulate", {
   ))
 })
 
-test_that("the load hook registers all Python dependencies", {
+test_that("the load hook registers feature Python dependencies", {
   expect_true(with_mocked_bindings(
     sleeper:::.onLoad("unused", "sleeper"),
-    py_require_sleeper = function(...) TRUE,
+    .py_require_sleeper_features = function(...) TRUE,
     .package = "sleeper"
   ))
 })
@@ -67,7 +67,7 @@ test_that("feature extraction requests only its Python dependencies", {
   expect_true(with_mocked_bindings(
     sleeper:::.py_require_sleeper_features(),
     py_require = function(packages, python_version, ...) {
-      expect_equal(packages, c("pandas", "numpy==1.20", "scipy"))
+      expect_equal(packages, c("pandas", "numpy>=1.20", "scipy"))
       expect_equal(python_version, "3.8")
       TRUE
     },
