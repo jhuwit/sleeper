@@ -17,8 +17,8 @@ py_estimate_sleep(
 
 \item{pyenv_function}{function that loads the forest Python package.
 By default, it uses \link{py_require_sleeper} to import
-the package. If this function has an args argument, the output of
-\code{pyenv_function} will be re-assigned to args.}
+the package. If this function has an \code{args} argument, the output of
+\code{pyenv_function} will be re-assigned to \code{args}.}
 
 \item{show}{Logical, whether to show the standard output on the
 screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
