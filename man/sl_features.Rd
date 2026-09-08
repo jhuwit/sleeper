@@ -10,7 +10,7 @@ sl_features(data)
 \item{data}{A \code{data.frame} with columns of \code{timestamp}, \code{x}, \code{y}, \code{z}}
 }
 \value{
-A \code{tibble} of times and classification of category.
+A \code{tibble} of times and classification of sleep.
 }
 \description{
 Get Sleep Features

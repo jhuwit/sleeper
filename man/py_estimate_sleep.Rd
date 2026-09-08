@@ -23,6 +23,10 @@ the package. If this function has an \code{args} argument, the output of
 \item{show}{Logical, whether to show the standard output on the
 screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
 }
+\value{
+Output from \code{\link[=estimate_sleep]{estimate_sleep()}},
+a \code{tibble} of times and classification of sleep.
+}
 \description{
 Run \code{estimate_sleep} with Python
 }

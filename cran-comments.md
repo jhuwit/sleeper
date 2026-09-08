@@ -4,4 +4,4 @@
 
 * This is a new release.
 ---
-Found a second case where parallelization was happening, limiting that now.
+Fixing the missing \value tags.

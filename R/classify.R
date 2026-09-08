@@ -47,7 +47,7 @@ sl_python_modules_installed = function(component = c("models", "features")) {
 #'
 #' @param data A `data.frame` with columns of `timestamp`, `x`, `y`, `z`
 #'
-#' @return A `tibble` of times and classification of category.
+#' @return A `tibble` of times and classification of sleep.
 #' @export
 #' @examples
 #' \donttest{
@@ -168,6 +168,8 @@ estimate_sleep = function(
 #' screen while the child process is running, passed to [callr::r()]
 #'
 #' @export
+#' @returns Output from [sleeper::estimate_sleep()],
+#' a `tibble` of times and classification of sleep.
 py_estimate_sleep = function(
     ...,
     pyenv_function = function() {
