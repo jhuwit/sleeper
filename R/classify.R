@@ -12,6 +12,12 @@ standardize_data = function(data) {
     dplyr::select(timestamp, x, y, z)
 }
 
+remove_python_version = function(modules) {
+   modules = sub(">.*", "", modules)
+   modules = sub("=.*", "", modules)
+   modules = unique(modules)
+}
+
 #' @rdname estimate_sleep
 #' @param component Python dependency set to check. The default, `"models"`,
 #'   checks all modules needed for sleep classification; `"features"` checks
@@ -24,6 +30,7 @@ sl_python_modules_installed = function(component = c("models", "features")) {
   } else {
     c(.sleeper_feature_modules, .sleeper_model_modules)
   }
+  modules = remove_python_version(modules)
   .python_modules_available(unique(modules))
 }
 
