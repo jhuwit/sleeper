@@ -24,7 +24,7 @@ sl_python_modules_installed = function(component = c("models", "features")) {
   } else {
     c(.sleeper_feature_modules, .sleeper_model_modules)
   }
-  .python_modules_available(modules)
+  .python_modules_available(unique(modules))
 }
 
 # `reticulate::py_module_available()` imports each target module. In

@@ -13,7 +13,7 @@
 # be asked to install it.
 .sleeper_feature_modules = c(
   "pandas",
-  "numpy",
+  "numpy>=1.20",
   "scipy",
   "collections"
 )
